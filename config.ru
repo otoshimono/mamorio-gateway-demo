@@ -1,3 +1,3 @@
 #config.ru
-require 'my_app'
+require './app'
 run Sinatra::Application
