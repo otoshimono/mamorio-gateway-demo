@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'sinatra-websocket'
-require 'json'
 
 set :server, 'thin'
 set :sockets, []
