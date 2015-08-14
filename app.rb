@@ -24,14 +24,10 @@ get '/' do
   end
 end
 
-#post '/log', provides: :json  do
-#  params = JSON.parse request.body.read
-#end
-
 post '/logs', provides: :json  do
   params = JSON.parse(request.body.read)
   p params
-  EM.next_tick { settings.sockets.each}
+  EM.next_tick { settings.sockets.each{|s| s.send(params) } }
 end
 
 __END__
