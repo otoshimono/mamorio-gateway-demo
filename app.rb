@@ -1,5 +1,7 @@
 require 'sinatra'
 require 'sinatra-websocket'
+require 'slim'
+require 'json'
 
 set :server, 'thin'
 set :sockets, []
@@ -13,9 +15,6 @@ get '/' do
         ws.send("Hello World!")
         settings.sockets << ws
       end
-      ws.onmessage do |msg|
-        EM.next_tick { settings.sockets.each{|s| s.send(msg) } }
-      end
       ws.onclose do
         warn("websocket closed")
         settings.sockets.delete(ws)
@@ -24,45 +23,21 @@ get '/' do
   end
 end
 
-post '/logs', provides: :json  do
-  params = JSON.parse(request.body.read)
-  p params
-  EM.next_tick { settings.sockets.each{|s| s.send(params) } }
+post '/logs' do
+  json = JSON.parse(request.body.read)
+  row = {
+    device_uuid: json['device_uuid'],
+    beacon_rssi: json['beacon']['rssi'],
+    beacon_accuracy: json['beacon']['accuracy'],
+    beacon_major: json['beacon']['major'],
+    beacon_minor: json['beacon']['minor']
+  }
+  row_string = JSON.generate(row)
+  p row_string
+  EM.next_tick do
+    settings.sockets.each do |s|
+      s.send(row_string);
+    end
+  end
 end
 
-__END__
-@@ index
-<html>
-  <body>
-     <h1>Simple Echo & Chat Searver</h1>
-     <form id="form">
-       <input type="text" id="input" value="send a message"></input>
-     </form>
-     <div id="msgs"></div>
-  </body>
-
-  <script type="text/javascript">
-    window.onload = function(){
-      (function(){
-        var show = function(el){
-          return function(msg){ el.innerHTML = msg + '<br />' + el.innerHTML; }
-        }(document.getElementById('msgs'));
-
-        var ws       = new WebSocket('ws://' + window.location.host + window.location.pathname);
-        ws.onopen    = function()  { show('websocket opened'); };
-        ws.onclose   = function()  { show('websocket closed'); }
-        ws.onmessage = function(m) { show('websocket message: ' +  m.data); };
-
-        var sender = function(f){
-          var input     = document.getElementById('input');
-          input.onclick = function(){ input.value = "" };
-          f.onsubmit    = function(){
-            ws.send(input.value);
-            input.value = "send a message";
-            return false;
-          }
-        }(document.getElementById('form'));
-      })();
-    }
-  </script>
-</html>
