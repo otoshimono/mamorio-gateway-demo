@@ -22,7 +22,10 @@ get '/' do
   end
 end
 
-post '/log', provides: :json  do
-  params = JSON.parse request.body.read
-
+#post '/log', provides: :json  do
+#  params = JSON.parse request.body.read
+#end
+post '/log' do
+  p params
 end
+
