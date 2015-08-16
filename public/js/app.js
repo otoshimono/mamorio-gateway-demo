@@ -10,7 +10,7 @@ window.onload = function(){
       $('#websocket-status').text('websocket closed');
     }
     ws.onmessage = function(m) {
-      console.log(m)
+      console.log(JSON.parse(m.data)['beacon_rssi']);
     };
   })();
 }
