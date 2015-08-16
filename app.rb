@@ -28,6 +28,7 @@ post '/logs' do
   json = JSON.parse(request.body.read)
   row = {
     device_uuid: json['device_uuid'],
+    beacon_proximity_uuid: json['beacon']['uuid'],
     beacon_rssi: json['beacon']['rssi'],
     beacon_accuracy: json['beacon']['accuracy'],
     beacon_major: json['beacon']['major'],
