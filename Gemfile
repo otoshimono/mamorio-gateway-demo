@@ -5,6 +5,6 @@ gem 'sinatra'
 gem 'json'
 gem 'slim'
 gem 'sinatra-websocket'
-gem 'twitter-bootstrap-rails'
+#gem 'twitter-bootstrap-rails'
 
 gem 'rack'
