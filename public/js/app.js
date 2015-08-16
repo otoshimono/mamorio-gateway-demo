@@ -11,8 +11,15 @@ window.onload = function(){
     }
     ws.onmessage = function(m) {
       var data = JSON.parse(m.data);
-      console.log(data);
-      addRow(data);
+      var selectedDeviceUUID = $('#device').val();
+      if (selectedDeviceUUID.length > 0) {
+        if (data['device_uuid'] == selectedDeviceUUID) {
+          addRow(data);
+        }
+      }
+      else {
+        addRow(data);
+      }
     };
   })();
 }
