@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra-websocket'
+require 'twitter-bootstrap-rails'
 require 'slim'
 require 'json'
 
