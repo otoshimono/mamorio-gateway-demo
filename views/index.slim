@@ -12,16 +12,14 @@ html
     #contents
       h1 Mamorio Gateway
       p#websocket-status
-      table class=""
-        tr
-          td
-            p device_id:
-          td
-            select
-              option value="volvo"123456
-              option value="saab"23456
-              option value="mercedes"34567
-              option value="audi"45678
+      form class="form-inline"
+        div class="form-group"
+          label for="exampleInputName2"device_id:
+          select
+            option value="volvo"123456
+            option value="saab"23456
+            option value="mercedes"34567
+            option value="audi"45678
       table class="table table-striped"
         tr
           td device_id
